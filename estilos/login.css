@@ -1,0 +1,120 @@
+* {
+    font-family: Barlow;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* estilo do login*/
+#fundo_login {
+    position: relative;
+
+    width: 100%;
+    min-height: 100vh;
+    background-image: url(../imagens/fundo_login.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+#bloco_login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    justify-content: flex-start;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    width: 506px;
+    height: 560px;
+    background: #eee;
+    border-radius: 12px;
+}
+
+#logo {
+    width: 180px;
+    height: 177px;
+    object-fit: cover;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    position: static;
+}
+
+#informacao {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+}
+
+#informacao label {
+    display: inline-block;
+    width: 120px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+#informacao input,
+#informacao select {
+    width: 80%;
+
+    width: 60%;
+}
+
+#informacao label {
+    text-align: left;
+    font-weight: 800;
+}
+
+#informacao input,
+#informacao select {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+#informacao input,
+#informacao select {
+    width: 300px;
+    height: 40px;
+}
+
+#testar_login {
+    background-color: #000000;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+
+}

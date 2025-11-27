@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="estilos/tarefa_menu.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Stack+Sans+Headline:wght@200..700&display=swap"
+        rel="stylesheet">
+    <title>Document</title>
+    <script src="funcoes.js/telaMenu.js" defer></script>
+</head>
+<!-- FUNDO ESCURECIDO DO MODAL -->
+<div id="modalOverlay" class="modal-overlay hidden"></div>
+
+<!-- MODAL DE NOVA TAREFA -->
+
+
+<div id="modalFormTarefa" class="modal hidden">
+    <div class="form-tarefa " id="formNovaTarefa">
+        <form class="modal-content" onsubmit="salvarTarefa(event)">
+            <h2>Nova Tarefa</h2>
+
+            <label>Título</label>
+            <input type="text" id="tituloTarefa" required>
+
+            <label>Descrição</label>
+            <textarea id="descricaoTarefa" required></textarea>
+
+            <label>Responsável</label>
+            <input type="text" id="responsavelTarefa" required>
+
+            <label>Prazo</label>
+            <input type="date" id="prazoTarefa" required>
+
+            <label>Prioridade</label>
+            <select id="prioridadeTarefa">
+                <option value="alta">Alta</option>
+                <option value="media">Média</option>
+                <option value="baixa">Baixa</option>
+            </select>
+
+            <div class="modal-botoes">
+                <button type="submit" class="btn-add">Salvar</button>
+                <button type="button" onclick="fecharFormTarefa()" class="btn-cancelar">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<body>
+    <header>
+        <div class="ladoEsquerdo">
+            <img id="logo" src="imagens/logo.jpg">
+            <span>Sistema de Gestão Manverse </span>
+            <button class="menuButao" id="ENCARREGADO">Encarregado</button>
+        </div>
+        <div class="ladoDireito">
+
+
+            <img id="perfil" src="imagens/Ellipse 1.svg">
+            <span id="usuário">Nome do USUARIO</span>
+            <img id="exit" src="imagens/logo-exit.svg">
+        </div>
+    </header>
+    <main>
+        <div class="menuControle">
+            <ul class="menuSuspenso">
+                <li onclick="mostrarPagina('Dashboard')"><button>Dashboard</button></li>
+                <li onclick="mostrarPagina('Tarefas')"><button>Tarefas</button></li>
+                <li onclick="mostrarPagina('Estatisticas')"><button>Estatísticas</button></li>
+                <li onclick="mostrarPagina('Usuarios')"><button>Usuários</button></li>
+                <li onclick="mostrarPagina('Relatorios')"><button>Relatórios</button></li>
+            </ul>
+        </div>
+
+        <div class="menuTarefa">
+            <div id="Dashboard">
+                <h1>Todas as Tarefas</h1>
+
+                <div class="tarefaSituacao">
+
+                    <!-- COLUNA PENDENTE -->
+                    <div class="coluna coluna-pendente">
+                        <div class="coluna-header">
+                            <h2>Pendente</h2>
+                            <span class="badge" id="badgePendente">0</span>
+                        </div>
+                        <ul id="listaPendente"></ul>
+                    </div>
+
+                    <!-- COLUNA EM ANDAMENTO -->
+                    <div class="coluna coluna-andamento">
+                        <div class="coluna-header">
+                            <h2>Em Andamento</h2>
+                            <span class="badge" id="badgeAndamento">0</span>
+                        </div>
+                        <ul id="listaandamento"></ul>
+                    </div>
+
+                    <!-- COLUNA CONCLUÍDA -->
+                    <div class="coluna coluna-concluida">
+                        <div class="coluna-header">
+                            <h2>Concluída</h2>
+                            <span class="badge" id="badgeConcluida">0</span>
+                        </div>
+                        <ul id="listaConcluida"></ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="Tarefas">
+                <div class="topo-tarefas">
+                    <h1>Todas as Tarefas</h1>
+                    <button class="btn-add" onclick="abrirFormTarefa()">+ Nova Tarefa</button>
+                </div>
+
+                <div class="tarefaSituacao">
+                    <!-- Coluna Pendente -->
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Pendente</h2>
+                            <span class="badge-coluna" id="badgePendenteT">0</span>
+                        </div>
+                        <ul id="listaPendenteT" class="lista-tarefas"></ul>
+                    </div>
+
+                    <!-- Coluna Em Andamento -->
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Em Andamento</h2>
+                            <span class="badge-coluna" id="badgeAndamentoT">0</span>
+                        </div>
+                        <ul id="listaAndamentoT" class="lista-tarefas"></ul>
+                    </div>
+
+                    <!-- Coluna Concluída -->
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Concluída</h2>
+                            <span class="badge-coluna" id="badgeConcluidaT">0</span>
+                        </div>
+                        <ul id="listaConcluidaT" class="lista-tarefas"></ul>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="Estatisticas">
+                <h1>ola</h1>
+                <div class="tarefaSituacao">
+
+                </div>
+            </div>
+            <div id="Usuarios">
+                <h1>ola</h1>
+                <div class="tarefaSituacao">
+
+                </div>
+            </div>
+            <div id="Relatorios">
+                <h1>ola</h1>
+                <div class="tarefaSituacao">
+
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

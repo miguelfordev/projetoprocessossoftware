@@ -1,0 +1,467 @@
+/* ================== RESET / BASE ================== */
+* {
+    font-family: "Barlow", sans-serif;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* ================== HEADER ================== */
+
+header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    border-bottom: 1px solid #000;
+    padding: 10px 20px;
+}
+
+.ladoEsquerdo,
+.ladoDireito {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#logo {
+    width: 68px;
+    height: 68px;
+}
+
+.menuButao {
+    width: 156px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.ladoEsquerdo .menuButao {
+    border-radius: 10px;
+    background: #ADCBD2;
+}
+
+.ladoDireito button {
+    border-radius: 8px;
+    background: #262626;
+    color: #FFF;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+}
+
+/* ================== MENU SUPERIOR (ABAS) ================== */
+
+.menuControle {
+    background: #ECECEC;
+    color: #000;
+    border-radius: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.menuSuspenso {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menuSuspenso li {
+    background: #ECECEC;
+    color: #000;
+    border-radius: 100px;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.menuSuspenso li:hover {
+    background: #d5d5d5;
+}
+
+/* ================== PÁGINAS / SEÇÕES ================== */
+
+#Dashboard,
+#Tarefas,
+#Estatisticas,
+#Usuarios,
+#Relatorios {
+    display: none; /* JS troca pra block */
+}
+
+/* ================== LAYOUT DAS 3 COLUNAS ================== */
+
+.tarefaSituacao {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 20px 0;
+}
+
+.coluna {
+    flex: 1;
+    min-height: 280px;
+    padding: 16px;
+    border-radius: 12px;
+    background: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Cores por coluna (Dashboard e Tarefas) */
+.coluna-pendente {
+    background: #fffbe6;
+}
+
+.coluna-andamento {
+    background: #e7f0ff;
+}
+
+.coluna-concluida {
+    background: #e6ffef;
+}
+
+/* Cabeçalho das colunas (título + badge) */
+
+.coluna-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.coluna-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #000;
+}
+
+/* Badges de quantidade (Dashboard e Tarefas) */
+.coluna-header .badge,
+.coluna-header .badge-coluna {
+    min-width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #fff;
+    color: #000;          /* 🔹 número preto */
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* listas em todas as colunas (Dashboard + Tarefas) */
+#listaPendente,
+#listaandamento,
+#listaConcluida,
+#listaPendenteT,
+#listaAndamentoT,
+#listaConcluidaT,
+.lista-tarefas {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ================== CARDS DE TAREFA (PADRÃO) ================== */
+
+.card-tarefa {
+    border-radius: 12px;
+    padding: 14px 16px;
+    border: 1px solid #e3e3e3;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Cores por status (para aba Tarefas) */
+.card-tarefa.pendente {
+    background: #fffbe6;
+}
+
+.card-tarefa.andamento {
+    background: #e9f2ff;
+}
+
+.card-tarefa.concluida {
+    background: #e8ffef;
+}
+
+/* Topo do card (aba Tarefas – título + editar/excluir) */
+.topo-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topo-card .titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+
+.acoes-card {
+    display: flex;
+    gap: 6px;
+}
+
+.acoes-card button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Topo do card (Dashboard – tags) */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-tags {
+    display: flex;
+    gap: 6px;
+}
+
+.tag {
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    font-weight: 600;
+}
+
+.tag-novo {
+    background: #fff191;
+    color: #8a6a00;
+}
+
+.tag-alta {
+    background: #ffccd0;
+    color: #a30018;
+}
+
+/* Título / descrição genéricos (funciona pra Dashboard e Tarefas) */
+
+.card-titulo,
+.card-tarefa .titulo {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+}
+
+.card-descricao,
+.card-tarefa .descricao {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.3;
+}
+
+/* Infos (responsável, prazo, etc.) */
+
+.card-meta,
+.info-card {
+    font-size: 12px;
+    color: #555;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* badge de prioridade na aba Tarefas */
+
+.linha-badges {
+    display: flex;
+    gap: 6px;
+    margin: 2px 0;
+}
+
+.badge-prioridade {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #ffd26f;
+    color: #8a4b00;
+}
+
+/* Botões de ação dentro do card */
+
+.card-actions-status {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.btn-acao {
+    flex: 1;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #f0f0f0;
+    font-size: 12px;
+}
+
+.btn-acao:hover {
+    background: #ddd;
+}
+
+/* Mensagem de bloqueado quando não pode agir no Dashboard */
+
+.bloqueado {
+    background: #eee;
+    border-radius: 6px;
+    padding: 6px;
+    text-align: center;
+    color: #777;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+/* ================== TOPO DA ABA TAREFAS ================== */
+
+.topo-tarefas {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+
+
+/* botão "+ Nova Tarefa" */
+
+.btn-add {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-add:hover {
+    background: #333;
+}
+
+/* ================== MODAL (NOVAS / EDITAR TAREFA) ================== */
+
+.hidden {
+    display: none !important;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.65);
+    backdrop-filter: blur(3px);
+    z-index: 20;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    width: 400px;
+    z-index: 30;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-content h2 {
+    margin-bottom: 6px;
+    font-size: 18px;
+}
+
+.modal-content label {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 6px;
+    border: 2px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+    color: #333;
+}
+
+.modal-content input:focus,
+.modal-content textarea:focus,
+.modal-content select:focus {
+    border-color: #0033dd;
+    box-shadow: 0 0 4px #0033dd55;
+}
+
+.modal-botoes {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.btn-cancelar {
+    background: #f5f5f5;
+    border-radius: 8px;
+    border: none;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-cancelar:hover {
+    background: #e0e0e0;
+}
