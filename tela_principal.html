@@ -51,6 +51,39 @@
         </form>
     </div>
 </div>
+<!-- MODAL DE USUÁRIOS -->
+<div id="modalFormUsuario" class="modal hidden">
+    <form class="modal-content" onsubmit="salvarUsuario(event)">
+        <h2 id="tituloUsuarioModal">Adicionar Novo Usuário</h2>
+
+        <label>Nome Completo</label>
+        <input type="text" id="usuarioNome" required>
+
+        <label>Email</label>
+        <input type="email" id="usuarioEmail" required>
+
+        <label>Telefone</label>
+        <input type="text" id="usuarioTelefone" required>
+
+        <label>Função</label>
+        <select id="usuarioFuncao">
+            <option value="Encarregado">Encarregado</option>
+            <option value="Colaborador">Colaborador</option>
+        </select>
+
+        <label>Status</label>
+        <select id="usuarioStatus">
+            <option value="Ativo">Ativo</option>
+            <option value="Inativo">Inativo</option>
+        </select>
+
+        <div class="modal-botoes">
+            <button type="button" class="btn-cancelar" onclick="fecharFormUsuario()">Cancelar</button>
+            <button type="submit" class="btn-add">Salvar</button>
+        </div>
+    </form>
+</div>
+
 
 <body>
     <header>
@@ -152,23 +185,224 @@
 
 
             <div id="Estatisticas">
-                <h1>ola</h1>
-                <div class="tarefaSituacao">
+                <h1>Estatísticas</h1>
 
+                <!-- CARDS SUPERIORES -->
+                <div class="estat-cards">
+                    <div class="estat-card">
+                        <p class="estat-label">Total de Tarefas</p>
+                        <p class="estat-value" id="estatTotalTarefas">0</p>
+                    </div>
+                    <div class="estat-card">
+                        <p class="estat-label">Concluídas</p>
+                        <p class="estat-value" id="estatConcluidas">0</p>
+                    </div>
+                    <div class="estat-card">
+                        <p class="estat-label">Em andamento</p>
+                        <p class="estat-value" id="estatAndamento">0</p>
+                    </div>
+                    <div class="estat-card">
+                        <p class="estat-label">Pendentes</p>
+                        <p class="estat-value" id="estatPendentes">0</p>
+                    </div>
+                    <div class="estat-card">
+                        <p class="estat-label">Atrasadas</p>
+                        <p class="estat-value" id="estatAtrasadas">0</p>
+                    </div>
+                    <div class="estat-card">
+                        <p class="estat-label">Concluídas Hoje</p>
+                        <p class="estat-value" id="estatConcluidasHoje">0</p>
+                    </div>
+                </div>
+
+                <!-- LINHA: TAXA DE CONCLUSÃO + PRIORIDADE -->
+                <div class="estat-row">
+                    <div class="estat-panel">
+                        <h3>Taxa de Conclusão</h3>
+                        <p class="estat-sub">Percentual de tarefas concluídas</p>
+
+                        <div class="barra-progresso">
+                            <div class="barra-progresso-preenchida" id="estatBarraConclusao"></div>
+                        </div>
+
+                        <div class="estat-footer">
+                            <span id="estatPorcentagemConclusao">0%</span> •
+                            <span id="estatTextoConclusao">0 de 0 tarefas concluídas</span>
+                        </div>
+                    </div>
+
+                    <div class="estat-panel">
+                        <h3>Tarefas por Prioridade</h3>
+                        <p class="estat-sub">Distribuição atual das tarefas</p>
+
+                        <div class="estat-prioridade-linhas">
+                            <div class="estat-prioridade-item">
+                                <span class="tag tag-alta">Alta</span>
+                                <span class="estat-prioridade-valor" id="estatPrioridadeAlta">0</span>
+                            </div>
+                            <div class="estat-prioridade-item">
+                                <span class="tag tag-novo">Média</span>
+                                <span class="estat-prioridade-valor" id="estatPrioridadeMedia">0</span>
+                            </div>
+                            <div class="estat-prioridade-item">
+                                <span class="tag" style="background:#e6ffef;color:#06611f;">Baixa</span>
+                                <span class="estat-prioridade-valor" id="estatPrioridadeBaixa">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LINHA: EQUIPE + PRODUTIVIDADE -->
+                <div class="estat-row">
+                    <div class="estat-panel">
+                        <h3>Equipe</h3>
+                        <p class="estat-sub">Estatísticas da equipe</p>
+
+                        <div class="estat-equipe-item">
+                            <span>Total de Usuários</span>
+                            <strong id="estatTotalUsuarios">0</strong>
+                        </div>
+                        <div class="estat-equipe-item">
+                            <span>Colaboradores Ativos</span>
+                            <strong id="estatColaboradoresAtivos">0</strong>
+                        </div>
+                    </div>
+
+                    <div class="estat-panel">
+                        <h3>Produtividade</h3>
+                        <p class="estat-sub">Taxa de conclusão por colaborador</p>
+
+                        <div id="estatListaProdutividade" class="estat-produtividade-lista">
+                            <!-- linhas geradas via JS -->
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div id="Usuarios">
-                <h1>ola</h1>
-                <div class="tarefaSituacao">
+                <div class="topo-tarefas">
+                    <h1>Gerenciamento de Usuários</h1>
+                    <button class="btn-add" onclick="abrirFormUsuario()">+ Novo Usuário</button>
+                </div>
 
+                <p>Cadastre e gerencie encarregados e colaboradores</p>
+
+                <div class="tabela-usuarios-box">
+                    <h3 class="subtitulo">Lista de Usuários</h3>
+
+                    <table class="tabela-usuarios">
+                        <thead>
+                            <tr>
+                                <th>Usuário</th>
+                                <th>Contato</th>
+                                <th>Função</th>
+                                <th>Status</th>
+                                <th>Cadastro em</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="listaUsuarios"></tbody>
+                    </table>
                 </div>
             </div>
+
             <div id="Relatorios">
-                <h1>ola</h1>
-                <div class="tarefaSituacao">
+                <h1>Relatórios</h1>
+                <p class="rel-subtitulo">Relatórios diários de atividades e desempenho</p>
 
+                <!-- PAINEL DE FILTROS -->
+                <div class="rel-panel rel-filtros">
+                    <h3>Filtros de Relatório</h3>
+                    <p class="rel-texto-menor">Configure os filtros para gerar relatórios personalizados</p>
+
+                    <div class="rel-filtros-grid">
+                        <div class="rel-field">
+                            <label for="relData">Data</label>
+                            <input type="date" id="relData">
+                        </div>
+
+                        <div class="rel-field">
+                            <label for="relColaborador">Colaborador</label>
+                            <select id="relColaborador">
+                                <option value="todos">Todos os colaboradores</option>
+                            </select>
+                        </div>
+
+                        <div class="rel-field">
+                            <label for="relStatus">Status</label>
+                            <select id="relStatus">
+                                <option value="todos">Todos os status</option>
+                                <option value="pendente">Pendente</option>
+                                <option value="andamento">Em andamento</option>
+                                <option value="concluida">Concluída</option>
+                            </select>
+                        </div>
+
+                        <div class="rel-field rel-field-botao">
+                            <button class="btn-relatorio" onclick="gerarRelatorio()">Gerar relatório</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARDS RESUMO -->
+                <div class="rel-cards">
+                    <div class="rel-card">
+                        <p class="rel-card-label">Total de Tarefas</p>
+                        <p class="rel-card-value" id="relTotal">0</p>
+                        <p class="rel-card-sub" id="relTotalData">Para -</p>
+                    </div>
+
+                    <div class="rel-card">
+                        <p class="rel-card-label">Concluídas</p>
+                        <p class="rel-card-value" id="relConc">0</p>
+                        <p class="rel-card-sub" id="relConcPct">0% do total</p>
+                    </div>
+
+                    <div class="rel-card">
+                        <p class="rel-card-label">Em andamento</p>
+                        <p class="rel-card-value" id="relAnd">0</p>
+                        <p class="rel-card-sub" id="relAndPct">0% do total</p>
+                    </div>
+
+                    <div class="rel-card">
+                        <p class="rel-card-label">Pendentes</p>
+                        <p class="rel-card-value" id="relPend">0</p>
+                        <p class="rel-card-sub" id="relPendPct">0% do total</p>
+                    </div>
+                </div>
+
+                <!-- DETALHES DAS TAREFAS -->
+                <div class="rel-panel rel-detalhes">
+                    <div class="rel-detalhes-header">
+                        <h3>Detalhes das Tarefas</h3>
+                        <p class="rel-texto-menor" id="relQtdLabel">
+                            0 tarefa(s) encontrada(s) para os filtros selecionados
+                        </p>
+                    </div>
+
+                    <table class="rel-tabela">
+                        <thead>
+                            <tr>
+                                <th>Tarefa</th>
+                                <th>Responsável</th>
+                                <th>Status</th>
+                                <th>Prioridade</th>
+                                <th>Prazo</th>
+                                <th>Atualizada em</th>
+                            </tr>
+                        </thead>
+                        <tbody id="relTabelaBody">
+                            <tr>
+                                <td colspan="6" class="rel-sem-registro">
+                                    Nenhuma tarefa encontrada para os filtros selecionados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+        </div>
         </div>
     </main>
 </body>

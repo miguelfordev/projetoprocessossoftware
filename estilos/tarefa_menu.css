@@ -13,6 +13,7 @@ body {
     width: 100%;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden; /* evita barra horizontal */
 }
 
 main {
@@ -32,7 +33,7 @@ header {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    height: 80px;
+    min-height: 80px;
     border-bottom: 1px solid #000;
     padding: 10px 20px;
 }
@@ -42,6 +43,7 @@ header {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: wrap; /* permite quebrar em tela menor */
 }
 
 #logo {
@@ -77,16 +79,19 @@ header {
     border-radius: 100px;
     margin-top: 20px;
     margin-bottom: 20px;
+    padding: 10px 20px;
+    overflow-x: auto;        /* se estourar, pode rolar na horizontal */
 }
 
 .menuSuspenso {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 150px;
+    gap: 40px;               /* antes era 150px – muito grande */
     list-style: none;
     padding: 0;
     margin: 0;
+    flex-wrap: wrap;         /* permite quebrar linha em telas médias */
 }
 
 .menuSuspenso li {
@@ -96,6 +101,7 @@ header {
     padding: 15px 30px;
     cursor: pointer;
     transition: background 0.3s;
+    white-space: nowrap;     /* não quebra o texto em 2 linhas */
 }
 
 .menuSuspenso li:hover {
@@ -168,7 +174,7 @@ header {
     height: 26px;
     border-radius: 50%;
     background: #fff;
-    color: #000;          /* 🔹 número preto */
+    color: #000;
     font-size: 14px;
     font-weight: 700;
     display: flex;
@@ -362,8 +368,6 @@ header {
     margin-bottom: 16px;
 }
 
-
-
 /* botão "+ Nova Tarefa" */
 
 .btn-add {
@@ -406,6 +410,7 @@ header {
     border-radius: 12px;
     padding: 25px;
     width: 400px;
+    max-width: 95vw;
     z-index: 30;
     box-shadow: 0 4px 16px rgba(0,0,0,0.3);
 }
@@ -464,4 +469,433 @@ header {
 
 .btn-cancelar:hover {
     background: #e0e0e0;
+}
+
+/* ============= RESPONSIVIDADE ============= */
+
+@media (max-width: 900px) {
+
+    body {
+        padding: 10px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .menuControle {
+        border-radius: 20px;
+        padding: 10px;
+    }
+
+    .menuSuspenso {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .menuSuspenso li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .tarefaSituacao {
+        flex-direction: column;
+    }
+
+    .coluna {
+        width: 100%;
+    }
+
+    .modal {
+        width: 90vw;
+        padding: 20px;
+    }
+}
+/* ======= TABELA DE USUÁRIOS ======= */
+
+.tabela-usuarios-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    margin-top: 20px;
+}
+
+.tabela-usuarios {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.tabela-usuarios th {
+    text-align: left;
+    padding: 12px;
+    font-weight: 700;
+    color: #333;
+}
+
+.tabela-usuarios td {
+    padding: 12px;
+    border-top: 1px solid #e6e6e6;
+    font-size: 14px;
+}
+
+.usuario-perfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.usuario-perfil .circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #d9d9d9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #555;
+}
+
+.status-ativo {
+    color: #0c8c28;
+    font-weight: 700;
+}
+
+.status-inativo {
+    color: #b80000;
+    font-weight: 700;
+}
+
+.acao-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+}
+
+.acao-btn.edit { color: #1b5dbf; }
+.acao-btn.delete { color: #d40000; }
+
+/* REPONSIVO */
+@media(max-width:900px){
+    .tabela-usuarios td, .tabela-usuarios th {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
+/* ========== ESTATÍSTICAS (DASHBOARD) ========== */
+
+.estat-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 20px 0;
+}
+
+.estat-card {
+    flex: 1;
+    min-width: 140px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.estat-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.estat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+}
+
+.estat-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.estat-panel {
+    flex: 1;
+    min-width: 260px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.estat-panel h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.estat-sub {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 12px;
+}
+
+/* barra de progresso */
+
+.barra-progresso {
+    width: 100%;
+    height: 10px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.barra-progresso-preenchida {
+    height: 100%;
+    width: 0%;
+    background: #111;
+    transition: width 0.3s ease;
+}
+
+.estat-footer {
+    font-size: 12px;
+    color: #555;
+}
+
+/* prioridades */
+
+.estat-prioridade-linhas {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.estat-prioridade-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.estat-prioridade-valor {
+    font-weight: 700;
+}
+
+/* equipe */
+
+.estat-equipe-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* produtividade */
+
+.estat-produtividade-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.estat-prod-item {
+    font-size: 13px;
+}
+
+.estat-prod-topo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.estat-prod-barra {
+    width: 100%;
+    height: 8px;
+    background: #e5e5e5;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.estat-prod-preenchida {
+    height: 100%;
+    width: 0%;
+    background: #111;
+    transition: width 0.3s ease;
+}
+
+/* responsivo estatísticas */
+@media (max-width: 900px) {
+    .estat-cards {
+        flex-direction: column;
+    }
+}
+/* ========== RELATÓRIOS ========== */
+
+.rel-subtitulo {
+    font-size: 14px;
+    color: #777;
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+.rel-panel {
+    background: #fff;
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    margin-bottom: 18px;
+}
+
+.rel-filtros h3 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.rel-texto-menor {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.rel-filtros-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px 18px;
+    margin-top: 8px;
+}
+
+.rel-field label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.rel-field input,
+.rel-field select {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #dcdcdc;
+    font-size: 14px;
+    outline: none;
+    background: #f8f8f8;
+}
+
+.rel-field input:focus,
+.rel-field select:focus {
+    border-color: #111;
+    background: #fff;
+}
+
+.rel-field-botao {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.btn-relatorio {
+    background: #111;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.btn-relatorio:hover {
+    background: #333;
+}
+
+/* cards */
+
+.rel-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.rel-card {
+    flex: 1;
+    min-width: 170px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+}
+
+.rel-card-label {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
+}
+
+.rel-card-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #000;
+}
+
+.rel-card-sub {
+    font-size: 11px;
+    color: #999;
+    margin-top: 4px;
+}
+
+/* detalhes */
+
+.rel-detalhes-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
+}
+
+.rel-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 6px;
+}
+
+.rel-tabela th,
+.rel-tabela td {
+    padding: 10px 8px;
+    font-size: 13px;
+    border-top: 1px solid #eee;
+    text-align: left;
+}
+
+.rel-tabela th {
+    font-weight: 700;
+    color: #333;
+}
+
+.rel-sem-registro {
+    text-align: center;
+    color: #777;
+    padding: 18px 0;
+}
+
+/* responsivo relatórios */
+
+@media (max-width: 900px) {
+    .rel-filtros-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rel-cards {
+        flex-direction: column;
+    }
 }

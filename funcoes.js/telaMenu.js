@@ -329,6 +329,8 @@ function atualizarBadges() {
     if (badgePendT) badgePendT.textContent = pend;
     if (badgeAndT)  badgeAndT.textContent  = and;
     if (badgeConcT) badgeConcT.textContent = conc;
+    atualizarEstatisticas();
+
 }
 
 
@@ -339,4 +341,452 @@ document.addEventListener("DOMContentLoaded", () => {
     mostrarPagina("Dashboard");
     renderizarDashboard();
     renderizarListaTarefas();
+});
+// ======================== USUÁRIOS ======================== //
+
+let listaUsuariosData = [];
+let usuarioEditandoId = null;
+
+// Abrir modal
+function abrirFormUsuario(id = null) {
+    usuarioEditandoId = id;
+
+    const overlay = document.getElementById("modalOverlay");
+    const modal = document.getElementById("modalFormUsuario");
+
+    overlay.classList.remove("hidden");
+    modal.classList.remove("hidden");
+
+    const titulo = document.getElementById("tituloUsuarioModal");
+    const nome = document.getElementById("usuarioNome");
+    const email = document.getElementById("usuarioEmail");
+    const telefone = document.getElementById("usuarioTelefone");
+    const funcao = document.getElementById("usuarioFuncao");
+    const status = document.getElementById("usuarioStatus");
+
+    // novo
+    if (id === null) {
+        titulo.textContent = "Adicionar Novo Usuário";
+        nome.value = "";
+        email.value = "";
+        telefone.value = "";
+        funcao.value = "Colaborador";
+        status.value = "Ativo";
+    } 
+    // edição
+    else {
+        titulo.textContent = "Editar Usuário";
+        const u = listaUsuariosData.find(x => x.id === id);
+
+        nome.value = u.nome;
+        email.value = u.email;
+        telefone.value = u.telefone;
+        funcao.value = u.funcao;
+        status.value = u.status;
+    }
+}
+
+// fechar modal
+function fecharFormUsuario() {
+    document.getElementById("modalOverlay").classList.add("hidden");
+    document.getElementById("modalFormUsuario").classList.add("hidden");
+}
+
+// salvar
+function salvarUsuario(e) {
+    e.preventDefault();
+
+    const nome = usuarioNome.value.trim();
+    const email = usuarioEmail.value.trim();
+    const telefone = usuarioTelefone.value.trim();
+    const funcao = usuarioFuncao.value;
+    const status = usuarioStatus.value;
+    const dataCadastro = new Date().toLocaleDateString("pt-BR");
+
+    if (usuarioEditandoId === null) {
+        listaUsuariosData.push({
+            id: Date.now(),
+            nome,
+            email,
+            telefone,
+            funcao,
+            status,
+            cadastro: dataCadastro
+        });
+    } else {
+        const u = listaUsuariosData.find(x => x.id === usuarioEditandoId);
+        u.nome = nome;
+        u.email = email;
+        u.telefone = telefone;
+        u.funcao = funcao;
+        u.status = status;
+    }
+
+    fecharFormUsuario();
+    renderizarUsuarios();
+}
+
+// editar
+function editarUsuario(id) {
+    abrirFormUsuario(id);
+}
+
+// ativar/inativar
+function alternarStatus(id) {
+    const u = listaUsuariosData.find(x => x.id === id);
+    u.status = (u.status === "Ativo") ? "Inativo" : "Ativo";
+    renderizarUsuarios();
+}
+
+// renderização
+function renderizarUsuarios() {
+    const tbody = document.getElementById("listaUsuarios");
+    tbody.innerHTML = "";
+
+    listaUsuariosData.forEach(u => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td>
+                <div class="usuario-perfil">
+                    <div class="circle">${u.nome.charAt(0).toUpperCase()}</div>
+                    <span>${u.nome}</span>
+                </div>
+            </td>
+
+            <td>${u.email}<br>${u.telefone}</td>
+            <td>${u.funcao}</td>
+
+            <td class="${u.status === "Ativo" ? "status-ativo" : "status-inativo"}">
+                ${u.status}
+            </td>
+
+            <td>${u.cadastro}</td>
+
+            <td>
+                <button class="acao-btn edit" onclick="editarUsuario(${u.id})">✏️</button>
+                <button class="acao-btn delete" onclick="alternarStatus(${u.id})">⚠️</button>
+            </td>
+        `;
+
+        tbody.appendChild(row);
+    });
+    atualizarEstatisticas();
+
+}
+
+// carregar aba usuários automaticamente quando abrir
+document.addEventListener("DOMContentLoaded", () => {
+    renderizarUsuarios();
+});
+function mudarStatusTarefa(id, novoStatus) {
+    const tarefa = tarefas.find(t => t.id === id);
+    if (!tarefa) return;
+
+    tarefa.status = novoStatus;
+
+    const agora = new Date();
+    tarefa.atualizada =
+        agora.toLocaleDateString("pt-BR") +
+        " às " +
+        agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+    // registra data de conclusão (para "Concluídas hoje")
+    if (novoStatus === "concluida") {
+        tarefa.dataConclusao = agora.toISOString().slice(0, 10); // yyyy-mm-dd
+    } else {
+        tarefa.dataConclusao = null;
+    }
+
+    renderizarDashboard();
+    renderizarListaTarefas();
+}
+// ================== ESTATÍSTICAS (DASHBOARD) ==================
+
+function atualizarEstatisticas() {
+    // elementos podem não existir se a aba não foi carregada
+    const elTotal        = document.getElementById("estatTotalTarefas");
+    const elConc         = document.getElementById("estatConcluidas");
+    const elAnd          = document.getElementById("estatAndamento");
+    const elPend         = document.getElementById("estatPendentes");
+    const elAtr          = document.getElementById("estatAtrasadas");
+    const elConcHoje     = document.getElementById("estatConcluidasHoje");
+    const elPct          = document.getElementById("estatPorcentagemConclusao");
+    const elTextoConc    = document.getElementById("estatTextoConclusao");
+    const elBarConc      = document.getElementById("estatBarraConclusao");
+    const elPrAlta       = document.getElementById("estatPrioridadeAlta");
+    const elPrMedia      = document.getElementById("estatPrioridadeMedia");
+    const elPrBaixa      = document.getElementById("estatPrioridadeBaixa");
+    const elTotUsers     = document.getElementById("estatTotalUsuarios");
+    const elColabAtivos  = document.getElementById("estatColaboradoresAtivos");
+    const listaProd      = document.getElementById("estatListaProdutividade");
+
+    if (!elTotal) return; // se a tela não existir, sai
+
+    const hojeISO = new Date().toISOString().slice(0, 10);
+    const hoje = new Date();
+
+    const total      = tarefas.length;
+    const concluidas = tarefas.filter(t => t.status === "concluida").length;
+    const andamento  = tarefas.filter(t => t.status === "andamento").length;
+    const pendentes  = tarefas.filter(t => t.status === "pendente").length;
+
+    const atrasadas  = tarefas.filter(t => {
+        if (!t.prazo) return false;
+        const prazoData = new Date(t.prazo + "T00:00:00");
+        return prazoData < hoje && t.status !== "concluida";
+    }).length;
+
+    const concluidasHoje = tarefas.filter(t =>
+        t.status === "concluida" && t.dataConclusao === hojeISO
+    ).length;
+
+    elTotal.textContent    = total;
+    elConc.textContent     = concluidas;
+    elAnd.textContent      = andamento;
+    elPend.textContent     = pendentes;
+    elAtr.textContent      = atrasadas;
+    elConcHoje.textContent = concluidasHoje;
+
+    const pct = total > 0 ? Math.round((concluidas / total) * 100) : 0;
+    elPct.textContent = pct + "%";
+    elTextoConc.textContent = `${concluidas} de ${total} tarefas concluídas`;
+    if (elBarConc) elBarConc.style.width = pct + "%";
+
+    // prioridades
+    const prAlta  = tarefas.filter(t => t.prioridade === "alta").length;
+    const prMedia = tarefas.filter(t => t.prioridade === "media").length;
+    const prBaixa = tarefas.filter(t => t.prioridade === "baixa").length;
+
+    elPrAlta.textContent  = prAlta;
+    elPrMedia.textContent = prMedia;
+    elPrBaixa.textContent = prBaixa;
+
+    // equipe (usa listaUsuariosData se existir)
+    const usuariosArr = Array.isArray(window.listaUsuariosData) ? window.listaUsuariosData : [];
+    const totalUsuarios = usuariosArr.length;
+    const colaboradoresAtivos = usuariosArr.filter(u => 
+        u.status === "Ativo" && u.funcao === "Colaborador"
+    ).length;
+
+    if (elTotUsers)    elTotUsers.textContent    = totalUsuarios;
+    if (elColabAtivos) elColabAtivos.textContent = colaboradoresAtivos;
+
+    // produtividade por responsável
+    if (listaProd) {
+        listaProd.innerHTML = "";
+        const mapa = {};
+
+        tarefas.forEach(t => {
+            const nome = t.responsavel?.trim();
+            if (!nome) return;
+            if (!mapa[nome]) {
+                mapa[nome] = { total: 0, concluidas: 0 };
+            }
+            mapa[nome].total++;
+            if (t.status === "concluida") mapa[nome].concluidas++;
+        });
+
+        Object.keys(mapa).forEach(nome => {
+            const dados = mapa[nome];
+            const pctLocal = dados.total > 0 ? Math.round((dados.concluidas / dados.total) * 100) : 0;
+
+            const item = document.createElement("div");
+            item.classList.add("estat-prod-item");
+            item.innerHTML = `
+                <div class="estat-prod-topo">
+                    <span>${nome}</span>
+                    <span>${pctLocal}%</span>
+                </div>
+                <div class="estat-prod-barra">
+                    <div class="estat-prod-preenchida" style="width:${pctLocal}%"></div>
+                </div>
+                <div style="font-size:11px;margin-top:2px;">
+                    ${dados.concluidas}/${dados.total} tarefas
+                </div>
+            `;
+            listaProd.appendChild(item);
+        });
+
+        if (Object.keys(mapa).length === 0) {
+            listaProd.innerHTML = "<span style='font-size:12px;color:#777;'>Nenhuma tarefa atribuída.</span>";
+        }
+    }
+}
+
+// ================== RELATÓRIOS ==================
+
+function formatarDataBR(iso) {
+    if (!iso) return "-";
+    const [ano, mes, dia] = iso.split("-");
+    return `${dia}/${mes}/${ano}`;
+}
+
+function capitalizarStatus(status) {
+    if (!status) return "-";
+    if (status === "pendente") return "Pendente";
+    if (status === "andamento") return "Em andamento";
+    if (status === "concluida") return "Concluída";
+    return status;
+}
+
+function capitalizarPrioridade(p) {
+    if (!p) return "-";
+    if (p === "alta") return "Alta";
+    if (p === "media") return "Média";
+    if (p === "baixa") return "Baixa";
+    return p;
+}
+
+// monta opções de colaboradores a partir de usuários + tarefas
+function atualizarOpcoesColaboradorRel() {
+    const sel = document.getElementById("relColaborador");
+    if (!sel) return;
+
+    const nomes = new Set();
+
+    if (Array.isArray(window.listaUsuariosData)) {
+        window.listaUsuariosData.forEach(u => {
+            if (u.nome) nomes.add(u.nome);
+        });
+    }
+
+    tarefas.forEach(t => {
+        if (t.responsavel) nomes.add(t.responsavel);
+    });
+
+    const valorAtual = sel.value;
+    sel.innerHTML = "";
+    const optTodos = document.createElement("option");
+    optTodos.value = "todos";
+    optTodos.textContent = "Todos os colaboradores";
+    sel.appendChild(optTodos);
+
+    [...nomes].sort().forEach(nome => {
+        const opt = document.createElement("option");
+        opt.value = nome;
+        opt.textContent = nome;
+        if (nome === valorAtual) opt.selected = true;
+        sel.appendChild(opt);
+    });
+}
+
+// gera o relatório com base nos filtros
+function gerarRelatorio() {
+    const inputData = document.getElementById("relData");
+    const selColab  = document.getElementById("relColaborador");
+    const selStatus = document.getElementById("relStatus");
+    const tbody     = document.getElementById("relTabelaBody");
+
+    if (!inputData || !selColab || !selStatus || !tbody) return;
+
+    atualizarOpcoesColaboradorRel();
+
+    const dataFiltro   = inputData.value; // yyyy-mm-dd
+    const colaborador  = selColab.value;
+    const statusFiltro = selStatus.value;
+
+    let filtradas = [...tarefas];
+
+    if (dataFiltro) {
+        filtradas = filtradas.filter(t => t.prazo === dataFiltro);
+    }
+
+    if (colaborador !== "todos") {
+        filtradas = filtradas.filter(t => (t.responsavel || "").trim() === colaborador.trim());
+    }
+
+    if (statusFiltro !== "todos") {
+        filtradas = filtradas.filter(t => t.status === statusFiltro);
+    }
+
+    const total = filtradas.length;
+    const conc  = filtradas.filter(t => t.status === "concluida").length;
+    const and   = filtradas.filter(t => t.status === "andamento").length;
+    const pend  = filtradas.filter(t => t.status === "pendente").length;
+
+    const pct = (qtd) => (total > 0 ? Math.round((qtd / total) * 100) : 0);
+
+    // cards
+    const elTotal     = document.getElementById("relTotal");
+    const elTotalData = document.getElementById("relTotalData");
+    const elConc      = document.getElementById("relConc");
+    const elConcPct   = document.getElementById("relConcPct");
+    const elAnd       = document.getElementById("relAnd");
+    const elAndPct    = document.getElementById("relAndPct");
+    const elPend      = document.getElementById("relPend");
+    const elPendPct   = document.getElementById("relPendPct");
+
+    if (elTotal)     elTotal.textContent     = total;
+    if (elTotalData) elTotalData.textContent = dataFiltro ? `Para ${formatarDataBR(dataFiltro)}` : "Para todos os prazos";
+
+    if (elConc)    elConc.textContent    = conc;
+    if (elConcPct) elConcPct.textContent = `${pct(conc)}% do total`;
+
+    if (elAnd)    elAnd.textContent    = and;
+    if (elAndPct) elAndPct.textContent = `${pct(and)}% do total`;
+
+    if (elPend)    elPend.textContent    = pend;
+    if (elPendPct) elPendPct.textContent = `${pct(pend)}% do total`;
+
+    // label de quantidade
+    const lblQtd = document.getElementById("relQtdLabel");
+    if (lblQtd) {
+        lblQtd.textContent = `${total} tarefa(s) encontrada(s) para os filtros selecionados`;
+    }
+
+    // tabela
+    tbody.innerHTML = "";
+
+    if (total === 0) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td colspan="6" class="rel-sem-registro">
+                Nenhuma tarefa encontrado para os filtros selecionados
+            </td>
+        `;
+        tbody.appendChild(tr);
+        return;
+    }
+
+    filtradas.forEach(t => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td>${t.titulo}</td>
+            <td>${t.responsavel || "-"}</td>
+            <td>${capitalizarStatus(t.status)}</td>
+            <td>${capitalizarPrioridade(t.prioridade)}</td>
+            <td>${t.prazo ? formatarDataBR(t.prazo) : "-"}</td>
+            <td>${t.atualizada || "-"}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// preparar tela de relatórios ao carregar
+function prepararRelatorios() {
+    const inputData = document.getElementById("relData");
+    if (inputData) {
+        const hoje = new Date();
+        const ano  = hoje.getFullYear();
+        const mes  = String(hoje.getMonth() + 1).padStart(2, "0");
+        const dia  = String(hoje.getDate()).padStart(2, "0");
+        inputData.value = `${ano}-${mes}-${dia}`;
+    }
+
+    atualizarOpcoesColaboradorRel();
+    gerarRelatorio();
+}
+document.addEventListener("DOMContentLoaded", () => {
+    prepararRelatorios();
+});
+// ===== BOTÃO DE SAIR (ENCARREGADO) =====
+document.addEventListener("DOMContentLoaded", () => {
+    const btnExit = document.getElementById("exit");
+    if (btnExit) {
+        btnExit.style.cursor = "pointer";
+        btnExit.addEventListener("click", () => {
+            window.location.href = "login.html";
+        });
+    }
 });

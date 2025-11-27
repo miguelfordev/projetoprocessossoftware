@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="estilos/tela_colaborador.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <title>Sistema Manverse - Colaborador</title>
+
+    <script src="funcoes.js/telaColaborador.js" defer></script>
+</head>
+
+<body>
+    <!-- NÃO TEM MODAL NEM OVERLAY -->
+
+    <!-- HEADER -->
+    <header>
+        <div class="ladoEsquerdo">
+            <img id="logo" src="imagens/logo.jpg" alt="Logo">
+            <span>Sistema de Gestão Manverse</span>
+            <button class="menuButao" id="COLABORADOR">Colaborador</button>
+        </div>
+
+        <div class="ladoDireito">
+            <img id="perfil" src="imagens/Ellipse 1.svg" alt="Foto">
+            <!-- ESSE NOME DEFINE O COLABORADOR LOGADO -->
+            <span id="nomeUsuarioHeader">Maria Santos</span>
+            <img id="exit" src="imagens/logo-exit.svg" alt="Sair">
+        </div>
+    </header>
+
+    <main>
+        <!-- MENU SUPERIOR -->
+        <div class="menuControle">
+            <ul class="menuSuspenso">
+                <li onclick="mostrarPagina('Dashboard')">Dashboard</li>
+                <li onclick="mostrarPagina('Tarefas')">Tarefas</li>
+                <li onclick="mostrarPagina('Estatisticas')">Estatísticas</li>
+            </ul>
+        </div>
+
+        <div class="menuTarefa">
+
+            <!-- DASHBOARD: SUAS TAREFAS -->
+            <section id="Dashboard">
+                <h1>Suas Tarefas</h1>
+
+                <div class="tarefaSituacao">
+                    <div class="coluna coluna-pendente">
+                        <div class="coluna-header">
+                            <h2>Pendente</h2>
+                            <span class="badge" id="badgePendente">0</span>
+                        </div>
+                        <ul id="listaPendente"></ul>
+                    </div>
+
+                    <div class="coluna coluna-andamento">
+                        <div class="coluna-header">
+                            <h2>Em andamento</h2>
+                            <span class="badge" id="badgeAndamento">0</span>
+                        </div>
+                        <ul id="listaAndamento"></ul>
+                    </div>
+
+                    <div class="coluna coluna-concluida">
+                        <div class="coluna-header">
+                            <h2>Concluída</h2>
+                            <span class="badge" id="badgeConcluida">0</span>
+                        </div>
+                        <ul id="listaConcluida"></ul>
+                    </div>
+                </div>
+
+                <section class="resumo-bloco">
+                    <h2>Resumo</h2>
+                    <div class="resumo-grid">
+                        <div class="card-resumo">
+                            <span class="label">Total de tarefas</span>
+                            <strong id="resTotal">0</strong>
+                        </div>
+                        <div class="card-resumo">
+                            <span class="label">Concluídas</span>
+                            <strong id="resConcluidas">0</strong>
+                        </div>
+                        <div class="card-resumo">
+                            <span class="label">Em andamento</span>
+                            <strong id="resAndamento">0</strong>
+                        </div>
+                        <div class="card-resumo">
+                            <span class="label">Pendentes</span>
+                            <strong id="resPendentes">0</strong>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ABA TAREFAS – APENAS VISUALIZAÇÃO + MUDAR STATUS -->
+            <section id="Tarefas">
+                <div class="topo-tarefas">
+                    <h1>Todas as suas tarefas</h1>
+                    <!-- sem botão de nova tarefa -->
+                </div>
+
+                <div class="tarefaSituacao">
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Pendente</h2>
+                            <span class="badge-coluna" id="badgePendenteT">0</span>
+                        </div>
+                        <ul id="listaPendenteT" class="lista-tarefas"></ul>
+                    </div>
+
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Em andamento</h2>
+                            <span class="badge-coluna" id="badgeAndamentoT">0</span>
+                        </div>
+                        <ul id="listaAndamentoT" class="lista-tarefas"></ul>
+                    </div>
+
+                    <div class="coluna">
+                        <div class="coluna-header">
+                            <h2>Concluída</h2>
+                            <span class="badge-coluna" id="badgeConcluidaT">0</span>
+                        </div>
+                        <ul id="listaConcluidaT" class="lista-tarefas"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESTATÍSTICAS DO COLABORADOR -->
+            <section id="Estatisticas">
+                <h1>Estatísticas</h1>
+                <p>Resumo das suas tarefas no sistema</p>
+
+                <div class="cards-estatisticas">
+                    <div class="card-est">
+                        <span>Total de tarefas</span>
+                        <strong id="statTotal">0</strong>
+                    </div>
+                    <div class="card-est">
+                        <span>Concluídas</span>
+                        <strong id="statConcluidas">0</strong>
+                    </div>
+                    <div class="card-est">
+                        <span>Em andamento</span>
+                        <strong id="statAndamento">0</strong>
+                    </div>
+                    <div class="card-est">
+                        <span>Pendentes</span>
+                        <strong id="statPendentes">0</strong>
+                    </div>
+                </div>
+
+                <div class="estatisticas-grid-2">
+                    <div class="card-est grande">
+                        <h3>Taxa de conclusão</h3>
+                        <p>Percentual de tarefas concluídas</p>
+                        <div class="barra-progresso">
+                            <div id="barraConclusao" class="barra-preenchida"></div>
+                        </div>
+                        <span id="percentConclusao" class="percentual">0%</span>
+                    </div>
+
+                    <div class="card-est grande">
+                        <h3>Tarefas por prioridade</h3>
+                        <p>Distribuição das suas tarefas</p>
+                        <ul class="lista-prioridade">
+                            <li><span class="badge-prio alta"></span> Alta: <strong id="prioAlta">0</strong></li>
+                            <li><span class="badge-prio media"></span> Média: <strong id="prioMedia">0</strong></li>
+                            <li><span class="badge-prio baixa"></span> Baixa: <strong id="prioBaixa">0</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>
