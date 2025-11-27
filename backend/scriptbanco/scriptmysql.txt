@@ -1,0 +1,25 @@
+-- Cria o banco de dados (se ainda não existir)
+CREATE DATABASE IF NOT EXISTS sistema_tarefas;
+
+-- Usa o banco
+USE sistema_tarefas;
+
+-- Tabela de usuários
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    tipo ENUM('ENCARREGADO', 'COLABORADOR') NOT NULL
+);
+
+-- Tabela de tarefas
+CREATE TABLE tarefas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    titulo VARCHAR(150) NOT NULL,
+    descricao TEXT,
+    status ENUM('PENDENTE', 'EM_ANDAMENTO', 'CONCLUIDA') DEFAULT 'PENDENTE',
+    prazo DATETIME,
+    usuarioId INT,
+    CONSTRAINT fk_tarefa_usuario
+        FOREIGN KEY (usuarioId) REFERENCES usuarios(id)
+);
